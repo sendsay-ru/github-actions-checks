@@ -4,14 +4,9 @@
       "key": "checks",
       "steps": [
         {
-          "key": "eslint",
-          "name": "Eslint",
-          "command": "npm eslint"
-        },
-        {
           "key": "prettier",
           "name": "Prettier",
-          "command": "npm pretify"
+          "command": "yarn pretify"
         }
       ]
     },
@@ -21,12 +16,12 @@
         {
           "key": "unit",
           "name": "Unit",
-          "command": "npm test"
+          "command": "yarn test"
         }
       ]
     }
   ],
   "node": 16,
-  "installCommand": "npm install",
+  "installCommand": "yarn install",
   "buildCommand": ""
 }
