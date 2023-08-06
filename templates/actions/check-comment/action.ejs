@@ -7,16 +7,10 @@ inputs:
     description: GITHUB_TOKEN
   title:
     required: true
-    description: title
-  eslint:
+    description: title<% checks.forEach(function({ key, name }){ %>
+  <%- key %>:
     required: true
-    description: Eslint
-  prettier:
-    required: true
-    description: Prettier
-  unit:
-    required: true
-    description: Unit
+    description: <%- name %><% }) %>
 
 runs:
   using: composite
@@ -25,9 +19,9 @@ runs:
         uses: sendsay-ru/rewritable-pr-comment@v1.0.0
         with:
           message: "${{ inputs.title }} \n\n
-                  | Eslint | Prettier | Unit |\n
-                  | --- | --- | --- |\n
-                  |  ${{ inputs.eslint }}  |  ${{ inputs.prettier }}  |  ${{ inputs.unit }}  |\n\n
+                  | <%- checks.map(({ name }) => name).join(' | ') %> |\n
+                  | <%- checks.map(() => '---').join(' | ') %> |\n
+                  | <%- checks.map(({ key }) => ' ${{ inputs.' + key + ' }} ').join(' | ') %> |\n\n
                   [🔗 See details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
           GITHUB_TOKEN: ${{ inputs.token }}
           COMMENT_IDENTIFIER: "comment-check-result"

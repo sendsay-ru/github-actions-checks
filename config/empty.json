@@ -1,0 +1,6 @@
+{
+  "jobs": [],
+  "node": "16",
+  "installCommand": "npm install",
+  "buildCommand": ""
+}

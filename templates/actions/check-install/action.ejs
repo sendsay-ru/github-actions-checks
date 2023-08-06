@@ -12,9 +12,15 @@ runs:
     - name: Setup node
       uses: actions/setup-node@v3
       with:
-        node-version: 16
-
+        node-version: <%- node || 16 %>
+    <% if (installCommand) { %>
     - name: Install packages
       shell: bash
-      run: npm install
-
+      run: <%- installCommand %>
+    <% } %>
+    <% if (buildCommand) { %>
+    - name: Build packages
+      if: always()
+      shell: bash
+      run: <%- buildCommand %>
+    <% } %>

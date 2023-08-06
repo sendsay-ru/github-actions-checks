@@ -26,6 +26,7 @@ jobs:
         uses: ./.github/actions/check-comment
         with:
           title: ${{ env.PROGRESS_TITLE }}
+          eslint: ${{ env.PROGRESS_ICON }}
           prettier: ${{ env.PROGRESS_ICON }}
           unit: ${{ env.PROGRESS_ICON }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -35,6 +36,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
+      eslint: ${{ steps.eslint.outputs.result }}
       prettier: ${{ steps.prettier.outputs.result }}
 
     steps:
@@ -46,12 +48,19 @@ jobs:
         with:
           cache-key: cache-turbo-checks-${{ github.event.pull_request.number }}
 
+      - name: Eslint
+        id: eslint
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: npm eslint
+
       - name: Prettier
         id: prettier
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: yarn pretify
+          script: npm pretify
 
   tests:
     needs: start
@@ -74,7 +83,7 @@ jobs:
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: yarn test
+          script: npm test
 
   report:
     needs: [checks,tests]
@@ -93,6 +102,7 @@ jobs:
         uses: ./.github/actions/check-comment
         with:
           title: ${{ steps.title.outputs.str }}
+          eslint: ${{ needs.checks.outputs.eslint }}
           prettier: ${{ needs.checks.outputs.prettier }}
           unit: ${{ needs.tests.outputs.unit }}
           token: ${{ secrets.GITHUB_TOKEN }}
