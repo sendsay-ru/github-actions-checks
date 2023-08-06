@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/aleksnick/github-action-checks#readme",
   "dependencies": {
-    "commander": "^11.0.0",
     "ejs": "^3.1.9",
     "joi": "^17.9.2"
   },
