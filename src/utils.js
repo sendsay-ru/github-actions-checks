@@ -4,7 +4,6 @@ const path = require('path');
 const schema = require('./schema');
 const dirs = require('../config/dirs');
 const emptyConfig = require('../config/empty');
-const { config } = require('process');
 
 const CONFIG_NAME = '.github.checks.json';
 const CONFIG_PATH = path.resolve(process.cwd(), CONFIG_NAME);
