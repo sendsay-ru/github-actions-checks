@@ -26,6 +26,7 @@
 - [🧐 About ](#-about-)
 - [🏁 Getting Started ](#-getting-started-)
 - [🎈 Usage ](#-usage-)
+- [💬 Comments](#-comments)
 - [✍️ Authors ](#️-authors-)
 
 ## 🧐 About <a name = "about"></a>
@@ -40,7 +41,13 @@ Just run
 npx github-action-checks
 ```
 
-The file `.github.checks.json` will appear in your repository. You can make the necessary changes in it and re-run the utility to make changes in workflow according to the config.
+The file `.github.checks.json` will appear in your repository. You can make the necessary changes in it and re-run the utility to make changes in workflow according to the config.<br>So, just edit this file and run again:
+
+```
+npx github-action-checks
+```
+
+Then commit changes in your repository.
 
 ## 🎈 Usage <a name="usage"></a>
 
@@ -75,26 +82,49 @@ config by default:
       ]
     }
   ],
+  "showComments": false,
   "node": 16,
   "installCommand": "npm install",
   "buildCommand": ""
 }
 ```
 
+`showComments` - show [Comments section](#-comments)
+
 `jobs` - asynchronous processes<br>
-each process - is a virtual machine and has:<br>
+each process will starts a virtual machine and has:<br>
 `node` - node.js version<br>
 `installCommand` - command to install dependencies<br>
 `buildCommand` - the command to build the project
 
 
-`steps` - array of checks in within a single process<br>
+`steps` - array of checks in within a separate process<br>
 each step has a `key`, a `name` and a `command`<br>
 
 in this example, 2 parallel processes will start:<br>
-in the first, checks will run one after the other: eslint and prettier,<br>
-in the other - unit tests
+- in the first, checks will run one after the other: eslint and prettier,
+- in the second - unit tests
 
-## ✍️ Authors <a name = "authors"></a>
+<br>
 
-- [@aleksnick](https://github.com/aleksnick) - Idea & Initial work
+![Screenshot of a github flow](/public/images/flow.png)
+
+## 💬 Comments
+
+> <b>Works only in private repositories!</b>
+
+If you change `{showComments: true}` in `.github.checks.json`, a special comment with the status of checks will be displayed in the pull request.
+
+Example of a comment when checks are in progress:
+![Screenshot of a github flow](/public/images/progress.png)
+
+Example of a comment when one of the checks failed:
+![Screenshot of a github flow](/public/images/progress.png)
+
+Example of a comment when one of the checks failed:
+![Screenshot of a github flow](/public/images/failed.png)
+<br>
+
+## ✍️ Authors <a name = "authors"></a> 
+
+- [@aleksnick](https://github.com/aleksnick) - Idea & Initial work, [contact in telegram](https://t.me/aleksnick)

@@ -1,0 +1,36 @@
+name: Check production
+on:
+  push:
+    branches:
+      - stable
+      - master
+    tags:
+      - v**
+
+env:
+  NODE_ENV: CI
+  FORCE_COLOR: 1
+
+jobs:
+  <% jobs.forEach(function(job){ %>
+  <%- job.key %>:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Preparing
+        uses: ./.github/actions/check-install
+        with:
+          cache-key: cache-turbo-checks-${{ github.event.ref }}
+
+      <% job.steps.forEach(function(step){ %>
+      - name: <%- step.name %>
+        id: <%- step.key %>
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: <%- step.command %>
+      <% }) %>
+  <% }) %>
