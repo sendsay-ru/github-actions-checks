@@ -1,0 +1,51 @@
+name: Check production
+on:
+  push:
+    tags:
+      - v**
+
+env:
+  NODE_ENV: CI
+  FORCE_COLOR: 1
+  SENDSAY_FORMS_JS: 'https://image.sendsay.ru/app/js/forms/forms.min.js'
+
+jobs:
+
+  checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Preparing
+        uses: ./.github/actions/check-install
+        with:
+          cache-key: cache-turbo-checks-${{ github.event.ref }}
+
+      - name: Prettier
+        id: prettier
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: yarn pretify
+
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Preparing
+        uses: ./.github/actions/check-install
+        with:
+          cache-key: cache-turbo-checks-${{ github.event.ref }}
+
+      - name: Unit
+        id: unit
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: yarn test
+

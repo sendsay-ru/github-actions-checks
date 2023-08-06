@@ -1,0 +1,98 @@
+name: Check PR
+on: [pull_request]
+
+env:
+  NODE_ENV: CI
+  FORCE_COLOR: 1
+  SENDSAY_FORMS_JS: 'https://image.sendsay.ru/app/js/forms/forms.min.js'
+  PROGRESS_TITLE: "### 👷 Checks in progress..."
+  SUCCESS_TITLE: "### ✅ Checks completed successfully!"
+  FAILURE_TITLE:  "### 🚫 Checks were executed with errors!"
+  PROGRESS_ICON: "🏄🏻‍♂️"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Starting comment
+        uses: ./.github/actions/check-comment
+        with:
+          title: ${{ env.PROGRESS_TITLE }}
+          prettier: ${{ env.PROGRESS_ICON }}
+          unit: ${{ env.PROGRESS_ICON }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  checks:
+    needs: start
+    runs-on: ubuntu-latest
+
+    outputs:
+      prettier: ${{ steps.prettier.outputs.result }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Preparing
+        uses: ./.github/actions/check-install
+        with:
+          cache-key: cache-turbo-checks-${{ github.event.pull_request.number }}
+
+      - name: Prettier
+        id: prettier
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: yarn pretify
+
+  tests:
+    needs: start
+    runs-on: ubuntu-latest
+
+    outputs:
+      unit: ${{ steps.unit.outputs.result }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Preparing
+        uses: ./.github/actions/check-install
+        with:
+          cache-key: cache-turbo-checks-${{ github.event.pull_request.number }}
+
+      - name: Unit
+        id: unit
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: yarn test
+
+  report:
+    needs: [checks,tests]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Title
+        id: title
+        run: |
+          if [[ ${{ needs.checks.result }} == 'success' ]] && [[ ${{ needs.tests.result }} == 'success' ]]; then echo "str=${{ env.SUCCESS_TITLE }}" >> $GITHUB_OUTPUT; else echo "str=${{ env.FAILURE_TITLE }}" >> $GITHUB_OUTPUT; fi
+
+      - name: Final comment
+        uses: ./.github/actions/check-comment
+        with:
+          title: ${{ steps.title.outputs.str }}
+          prettier: ${{ needs.checks.outputs.prettier }}
+          unit: ${{ needs.tests.outputs.unit }}
+          token: ${{ secrets.GITHUB_TOKEN }}
