@@ -1,0 +1,32 @@
+{
+  "jobs": [
+    {
+      "key": "checks",
+      "steps": [
+        {
+          "key": "eslint",
+          "name": "Eslint",
+          "command": "npm eslint"
+        },
+        {
+          "key": "prettier",
+          "name": "Prettier",
+          "command": "npm pretify"
+        }
+      ]
+    },
+    {
+      "key": "tests",
+      "steps": [
+        {
+          "key": "unit",
+          "name": "Unit",
+          "command": "npm test"
+        }
+      ]
+    }
+  ],
+  "node": 16,
+  "installCommand": "npm install",
+  "buildCommand": ""
+}

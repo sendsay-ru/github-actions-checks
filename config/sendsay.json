@@ -1,0 +1,57 @@
+{
+  "jobs": [
+    {
+      "key": "checks",
+      "steps": [
+        {
+          "key": "prettier",
+          "name": "Prettier",
+          "command": "yarn pretify"
+        },
+        {
+          "key": "stylelint",
+          "name": "Stylelint",
+          "command": "yarn stylelint"
+        },
+        {
+          "key": "typescript",
+          "name": "Typescript",
+          "command": "yarn dev-tsc"
+        }
+      ]
+    },
+    {
+      "key": "eslint",
+      "steps": [
+        {
+          "key": "eslint",
+          "name": "Eslint",
+          "command": "yarn eslint"
+        }
+      ]
+    },
+    {
+      "key": "unit-app",
+      "steps": [
+        {
+          "key": "unit",
+          "name": "Unit-app",
+          "command": "yarn unit-app"
+        }
+      ]
+    },
+    {
+      "key": "unit-rest",
+      "steps": [
+        {
+          "key": "unit",
+          "name": "Unit-rest",
+          "command": "yarn unit-packages"
+        }
+      ]
+    }
+  ],
+  "node": 16,
+  "installCommand": "yarn install",
+  "buildCommand": "yarn build-packages"
+}
