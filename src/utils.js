@@ -49,7 +49,9 @@ const finalEdit = (content) => {
 
 module.exports.saveFiles = (compiledSource) => {
   compiledSource.forEach(({ output, content }) => {
-    fs.writeFileSync(path.resolve(process.cwd(), output), content);
+    fs.writeFileSync(path.resolve(process.cwd(), output), content, {
+      mode: 0o775,
+    });
   });
 };
 
