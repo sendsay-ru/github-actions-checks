@@ -1,13 +1,15 @@
 name: Check production
 on:
   push:
+    branches:
+      - stable
+      - master
     tags:
       - v**
 
 env:
   NODE_ENV: CI
   FORCE_COLOR: 1
-  SENDSAY_FORMS_JS: 'https://image.sendsay.ru/app/js/forms/forms.min.js'
 
 jobs:
 
@@ -22,6 +24,13 @@ jobs:
         uses: ./.github/actions/check-install
         with:
           cache-key: cache-turbo-checks-${{ github.event.ref }}
+
+      - name: Eslint
+        id: eslint
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: npm eslint
 
       - name: Prettier
         id: prettier
@@ -48,4 +57,3 @@ jobs:
         uses: ./.github/actions/check-run
         with:
           script: yarn test
-

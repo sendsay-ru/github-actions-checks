@@ -4,7 +4,6 @@ on: [pull_request]
 env:
   NODE_ENV: CI
   FORCE_COLOR: 1
-  SENDSAY_FORMS_JS: 'https://image.sendsay.ru/app/js/forms/forms.min.js'
   PROGRESS_TITLE: "### 👷 Checks in progress..."
   SUCCESS_TITLE: "### ✅ Checks completed successfully!"
   FAILURE_TITLE:  "### 🚫 Checks were executed with errors!"
@@ -13,6 +12,10 @@ env:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
+
+permissions:
+  checks: write
+  pull-requests: write
 
 jobs:
   start:
@@ -26,6 +29,7 @@ jobs:
         uses: ./.github/actions/check-comment
         with:
           title: ${{ env.PROGRESS_TITLE }}
+          eslint: ${{ env.PROGRESS_ICON }}
           prettier: ${{ env.PROGRESS_ICON }}
           unit: ${{ env.PROGRESS_ICON }}
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -35,6 +39,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
+      eslint: ${{ steps.eslint.outputs.result }}
       prettier: ${{ steps.prettier.outputs.result }}
 
     steps:
@@ -45,6 +50,13 @@ jobs:
         uses: ./.github/actions/check-install
         with:
           cache-key: cache-turbo-checks-${{ github.event.pull_request.number }}
+
+      - name: Eslint
+        id: eslint
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: npm eslint
 
       - name: Prettier
         id: prettier
@@ -93,6 +105,7 @@ jobs:
         uses: ./.github/actions/check-comment
         with:
           title: ${{ steps.title.outputs.str }}
+          eslint: ${{ needs.checks.outputs.eslint }}
           prettier: ${{ needs.checks.outputs.prettier }}
           unit: ${{ needs.tests.outputs.unit }}
           token: ${{ secrets.GITHUB_TOKEN }}
