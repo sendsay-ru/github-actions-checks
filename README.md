@@ -37,7 +37,7 @@ We have created a project to configure the same type of checks. This package all
 Just run
 
 ```
-npx github-actions-checks
+npx github-action-checks
 ```
 
 The file `.github.checks.json` will appear in your repository. You can make the necessary changes in it and re-run the utility to make changes in workflow according to the config.

@@ -30,7 +30,7 @@ jobs:
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: npm eslint
+          script: yarn eslint
 
       - name: Prettier
         id: prettier
@@ -57,3 +57,4 @@ jobs:
         uses: ./.github/actions/check-run
         with:
           script: yarn test
+
