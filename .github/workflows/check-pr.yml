@@ -1,13 +1,8 @@
 name: Check PR
-on: [pull_request_target]
+on: [pull_request]
 
 env:
   NODE_ENV: CI
-  FORCE_COLOR: 1
-  PROGRESS_TITLE: "### 👷 Checks in progress..."
-  SUCCESS_TITLE: "### ✅ Checks completed successfully!"
-  FAILURE_TITLE:  "### 🚫 Checks were executed with errors!"
-  PROGRESS_ICON: "🏄🏻‍♂️"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -20,6 +15,10 @@ permissions:
 jobs:
   start:
     runs-on: ubuntu-latest
+    env:
+      FORCE_COLOR: 1
+      PROGRESS_TITLE: "### 👷 Checks in progress..."
+      PROGRESS_ICON: "🏄🏻‍♂️"
 
     steps:
       - name: Checkout
@@ -92,6 +91,9 @@ jobs:
     needs: [checks,tests]
     if: always()
     runs-on: ubuntu-latest
+    env:
+      SUCCESS_TITLE: "### ✅ Checks completed successfully!"
+      FAILURE_TITLE:  "### 🚫 Checks were executed with errors!"
     steps:
       - name: Checkout
         uses: actions/checkout@v3

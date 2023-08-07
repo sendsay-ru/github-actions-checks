@@ -27,7 +27,6 @@
   "homepage": "https://github.com/sendsay-ru/github-action-checks#readme",
   "dependencies": {
     "ejs": "^3.1.9",
-    "github-action-checks": "^1.0.2",
     "joi": "^17.9.2"
   },
   "devDependencies": {
