@@ -8,11 +8,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
-permissions: write-all
-
 jobs:
   start:
     runs-on: ubuntu-latest
+    permissions: write-all
     env:
       FORCE_COLOR: 1
       PROGRESS_TITLE: "### 👷 Checks in progress..."
@@ -89,6 +88,7 @@ jobs:
     needs: [checks,tests]
     if: always()
     runs-on: ubuntu-latest
+    permissions: write-all
     env:
       SUCCESS_TITLE: "### ✅ Checks completed successfully!"
       FAILURE_TITLE:  "### 🚫 Checks were executed with errors!"
