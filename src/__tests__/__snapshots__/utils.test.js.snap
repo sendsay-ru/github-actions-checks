@@ -32,6 +32,7 @@ jobs:
         with:
           title: \${{ env.PROGRESS_TITLE }}
           eslint: \${{ env.PROGRESS_ICON }}
+          prettier: \${{ env.PROGRESS_ICON }}
           unit: \${{ env.PROGRESS_ICON }}
           token: \${{ secrets.GITHUB_TOKEN }}
 
@@ -41,6 +42,7 @@ jobs:
 
     outputs:
       eslint: \${{ steps.eslint.outputs.result }}
+      prettier: \${{ steps.prettier.outputs.result }}
 
     steps:
       - name: Checkout
@@ -57,6 +59,13 @@ jobs:
         uses: ./.github/actions/check-run
         with:
           script: npm eslint
+
+      - name: Prettier
+        id: prettier
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: npm pretify
 
   tests:
     needs: start
@@ -99,6 +108,7 @@ jobs:
         with:
           title: \${{ steps.title.outputs.str }}
           eslint: \${{ needs.checks.outputs.eslint }}
+          prettier: \${{ needs.checks.outputs.prettier }}
           unit: \${{ needs.tests.outputs.unit }}
           token: \${{ secrets.GITHUB_TOKEN }}
 ",
@@ -137,6 +147,13 @@ jobs:
         with:
           script: npm eslint
 
+      - name: Prettier
+        id: prettier
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: npm pretify
+
   tests:
     runs-on: ubuntu-latest
 
@@ -173,6 +190,9 @@ inputs:
   eslint:
     required: true
     description: Eslint
+  prettier:
+    required: true
+    description: Prettier
   unit:
     required: true
     description: Unit
@@ -184,9 +204,9 @@ runs:
         uses: sendsay-ru/rewritable-pr-comment@v1.0.0
         with:
           message: "\${{ inputs.title }} \\n\\n
-                  | Eslint | Unit |\\n
-                  | --- | --- |\\n
-                  |  \${{ inputs.eslint }}  |  \${{ inputs.unit }}  |\\n\\n
+                  | Eslint | Prettier | Unit |\\n
+                  | --- | --- | --- |\\n
+                  |  \${{ inputs.eslint }}  |  \${{ inputs.prettier }}  |  \${{ inputs.unit }}  |\\n\\n
                   [🔗 See details](\${{ github.server_url }}/\${{ github.repository }}/actions/runs/\${{ github.run_id }})"
           GITHUB_TOKEN: \${{ inputs.token }}
           COMMENT_IDENTIFIER: "comment-check-result"
@@ -372,10 +392,6 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version: 16
-
-    - name: Install packages
-      shell: bash
-      run: npm install
 
 ",
     "output": ".github/actions/check-install/action.yml",
@@ -767,6 +783,11 @@ runs:
     - name: Install packages
       shell: bash
       run: yarn install
+
+    - name: Build packages
+      if: always()
+      shell: bash
+      run: yarn build-packages
 
 ",
     "output": ".github/actions/check-install/action.yml",

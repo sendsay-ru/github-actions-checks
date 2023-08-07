@@ -1,5 +1,5 @@
 {
-  "name": "@sendsay/github-action-checks",
+  "name": "github-action-checks",
   "version": "1.0.0",
   "description": "Add github-action workflow for linting",
   "main": "src/utils.js",

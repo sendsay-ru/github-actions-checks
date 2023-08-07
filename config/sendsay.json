@@ -53,5 +53,5 @@
   ],
   "node": 16,
   "installCommand": "yarn install",
-  "buildCommand": ""
+  "buildCommand": "yarn build-packages"
 }

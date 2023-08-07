@@ -7,6 +7,11 @@
           "key": "eslint",
           "name": "Eslint",
           "command": "npm eslint"
+        },
+        {
+          "key": "prettier",
+          "name": "Prettier",
+          "command": "npm pretify"
         }
       ]
     },
