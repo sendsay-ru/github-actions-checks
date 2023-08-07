@@ -11,7 +11,6 @@ concurrency:
 jobs:
   start:
     runs-on: ubuntu-latest
-    permissions: write-all
     env:
       FORCE_COLOR: 1
       PROGRESS_TITLE: "### 👷 Checks in progress..."
@@ -84,11 +83,11 @@ jobs:
         with:
           script: yarn test
 
+
   report:
     needs: [checks,tests]
     if: always()
     runs-on: ubuntu-latest
-    permissions: write-all
     env:
       SUCCESS_TITLE: "### ✅ Checks completed successfully!"
       FAILURE_TITLE:  "### 🚫 Checks were executed with errors!"
@@ -109,3 +108,4 @@ jobs:
           prettier: ${{ needs.checks.outputs.prettier }}
           unit: ${{ needs.tests.outputs.unit }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
