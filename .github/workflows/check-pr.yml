@@ -9,28 +9,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  start:
-    runs-on: ubuntu-latest
-    env:
-      FORCE_COLOR: 1
-      PROGRESS_TITLE: "### 👷 Checks in progress..."
-      PROGRESS_ICON: "🏄🏻‍♂️"
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Starting comment
-        uses: ./.github/actions/check-comment
-        with:
-          title: ${{ env.PROGRESS_TITLE }}
-          eslint: ${{ env.PROGRESS_ICON }}
-          prettier: ${{ env.PROGRESS_ICON }}
-          unit: ${{ env.PROGRESS_ICON }}
-          token: ${{ secrets.GITHUB_TOKEN }}
 
   checks:
-    needs: start
+
     runs-on: ubuntu-latest
 
     outputs:
@@ -61,7 +42,7 @@ jobs:
           script: yarn pretify
 
   tests:
-    needs: start
+
     runs-on: ubuntu-latest
 
     outputs:
@@ -83,29 +64,4 @@ jobs:
         with:
           script: yarn test
 
-
-  report:
-    needs: [checks,tests]
-    if: always()
-    runs-on: ubuntu-latest
-    env:
-      SUCCESS_TITLE: "### ✅ Checks completed successfully!"
-      FAILURE_TITLE:  "### 🚫 Checks were executed with errors!"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Title
-        id: title
-        run: |
-          if [[ ${{ needs.checks.result }} == 'success' ]] && [[ ${{ needs.tests.result }} == 'success' ]]; then echo "str=${{ env.SUCCESS_TITLE }}" >> $GITHUB_OUTPUT; else echo "str=${{ env.FAILURE_TITLE }}" >> $GITHUB_OUTPUT; fi
-
-      - name: Final comment
-        uses: ./.github/actions/check-comment
-        with:
-          title: ${{ steps.title.outputs.str }}
-          eslint: ${{ needs.checks.outputs.eslint }}
-          prettier: ${{ needs.checks.outputs.prettier }}
-          unit: ${{ needs.tests.outputs.unit }}
-          token: ${{ secrets.GITHUB_TOKEN }}
 
