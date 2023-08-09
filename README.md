@@ -41,7 +41,7 @@ Just run
 npx github-action-checks
 ```
 
-The file `.github.checks.json` will appear in your repository. You can make the necessary changes in it and re-run the utility to make changes in workflow according to the config.<br>So, just edit this file and run again:
+The file `.github.checks.json` will appear in your repository. You can edit it as you like and re-run the utility to update workflow according to the config.<br>So, just edit this file and run again:
 
 ```
 npx github-action-checks
@@ -61,13 +61,13 @@ config by default:
       "steps": [
         {
           "key": "eslint",
-          "name": "Eslint",
+          "name": "ESLint",
           "command": "npm eslint"
         },
         {
           "key": "prettier",
           "name": "Prettier",
-          "command": "npm pretify"
+          "command": "npm prettify"
         }
       ]
     },
@@ -92,13 +92,13 @@ config by default:
 `showComments` - show [Comments section](#-comments)
 
 `jobs` - asynchronous processes<br>
-each process will starts a virtual machine and has:<br>
+each process will start a virtual machine with:<br>
 `node` - node.js version<br>
 `installCommand` - command to install dependencies<br>
 `buildCommand` - the command to build the project
 
 
-`steps` - array of checks in within a separate process<br>
+`steps` - array of checks within a separate process<br>
 each step has a `key`, a `name` and a `command`<br>
 
 in this example, 2 parallel processes will start:<br>

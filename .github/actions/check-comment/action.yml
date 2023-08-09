@@ -10,7 +10,7 @@ inputs:
     description: title
   eslint:
     required: true
-    description: Eslint
+    description: ESLint
   prettier:
     required: true
     description: Prettier
@@ -25,7 +25,7 @@ runs:
         uses: sendsay-ru/rewritable-pr-comment@v1.0.1
         with:
           message: "${{ inputs.title }} \n\n
-                  | Eslint | Prettier | Unit |\n
+                  | ESLint | Prettier | Unit |\n
                   | --- | --- | --- |\n
                   |  ${{ inputs.eslint }}  |  ${{ inputs.prettier }}  |  ${{ inputs.unit }}  |\n\n
                   [🔗 See details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"

@@ -1,29 +1,18 @@
 {
   "jobs": [
     {
-      "key": "checks",
-      "steps": [
-        {
-          "key": "eslint",
-          "name": "Eslint",
-          "command": "yarn eslint"
-        },
-        {
-          "key": "prettier",
-          "name": "Prettier",
-          "command": "yarn pretify"
-        }
-      ]
+      "name": "test group 1",
+      "url": "https:site1.ru",
+      "working-directory": "",
+      "browser": "chrome",
+      "spec": "cypress/test1.spec"
     },
     {
-      "key": "tests",
-      "steps": [
-        {
-          "key": "unit",
-          "name": "Unit",
-          "command": "yarn test"
-        }
-      ]
+      "name": "test group 2",
+      "url": "https:site2.ru",
+      "working-directory": "",
+      "browser": "chrome",
+      "spec": "cypress/test2.spec"
     }
   ],
   "showComments": false,

@@ -6,7 +6,7 @@
         {
           "key": "prettier",
           "name": "Prettier",
-          "command": "yarn pretify"
+          "command": "yarn prettify"
         },
         {
           "key": "stylelint",
@@ -15,7 +15,7 @@
         },
         {
           "key": "typescript",
-          "name": "Typescript",
+          "name": "TypeScript",
           "command": "yarn dev-tsc"
         }
       ]
@@ -25,7 +25,7 @@
       "steps": [
         {
           "key": "eslint",
-          "name": "Eslint",
+          "name": "ESLint",
           "command": "yarn eslint"
         }
       ]

@@ -32,7 +32,7 @@ jobs:
         with:
           cache-key: cache-turbo-checks-\${{ github.event.pull_request.number }}
 
-      - name: Eslint
+      - name: ESLint
         id: eslint
         if: always()
         uses: ./.github/actions/check-run
@@ -44,7 +44,7 @@ jobs:
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: npm pretify
+          script: npm prettify
 
   tests:
 
@@ -101,7 +101,7 @@ jobs:
         with:
           cache-key: cache-turbo-checks-\${{ github.event.ref }}
 
-      - name: Eslint
+      - name: ESLint
         id: eslint
         if: always()
         uses: ./.github/actions/check-run
@@ -113,7 +113,7 @@ jobs:
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: npm pretify
+          script: npm prettify
 
   tests:
     runs-on: ubuntu-latest
@@ -150,7 +150,7 @@ inputs:
     description: title
   eslint:
     required: true
-    description: Eslint
+    description: ESLint
   prettier:
     required: true
     description: Prettier
@@ -165,7 +165,7 @@ runs:
         uses: sendsay-ru/rewritable-pr-comment@v1.0.1
         with:
           message: "\${{ inputs.title }} \\n\\n
-                  | Eslint | Prettier | Unit |\\n
+                  | ESLint | Prettier | Unit |\\n
                   | --- | --- | --- |\\n
                   |  \${{ inputs.eslint }}  |  \${{ inputs.prettier }}  |  \${{ inputs.unit }}  |\\n\\n
                   [🔗 See details](\${{ github.server_url }}/\${{ github.repository }}/actions/runs/\${{ github.run_id }})"
@@ -424,7 +424,7 @@ jobs:
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: yarn pretify
+          script: yarn prettify
 
       - name: Stylelint
         id: stylelint
@@ -433,7 +433,7 @@ jobs:
         with:
           script: yarn stylelint
 
-      - name: Typescript
+      - name: TypeScript
         id: typescript
         if: always()
         uses: ./.github/actions/check-run
@@ -456,7 +456,7 @@ jobs:
         with:
           cache-key: cache-turbo-checks-\${{ github.event.pull_request.number }}
 
-      - name: Eslint
+      - name: ESLint
         id: eslint
         if: always()
         uses: ./.github/actions/check-run
@@ -574,7 +574,7 @@ jobs:
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: yarn pretify
+          script: yarn prettify
 
       - name: Stylelint
         id: stylelint
@@ -583,7 +583,7 @@ jobs:
         with:
           script: yarn stylelint
 
-      - name: Typescript
+      - name: TypeScript
         id: typescript
         if: always()
         uses: ./.github/actions/check-run
@@ -602,7 +602,7 @@ jobs:
         with:
           cache-key: cache-turbo-checks-\${{ github.event.ref }}
 
-      - name: Eslint
+      - name: ESLint
         id: eslint
         if: always()
         uses: ./.github/actions/check-run
@@ -669,10 +669,10 @@ inputs:
     description: Stylelint
   typescript:
     required: true
-    description: Typescript
+    description: TypeScript
   eslint:
     required: true
-    description: Eslint
+    description: ESLint
   unit:
     required: true
     description: Unit-app
@@ -687,7 +687,7 @@ runs:
         uses: sendsay-ru/rewritable-pr-comment@v1.0.1
         with:
           message: "\${{ inputs.title }} \\n\\n
-                  | Prettier | Stylelint | Typescript | Eslint | Unit-app | Unit-rest |\\n
+                  | Prettier | Stylelint | TypeScript | ESLint | Unit-app | Unit-rest |\\n
                   | --- | --- | --- | --- | --- | --- |\\n
                   |  \${{ inputs.prettier }}  |  \${{ inputs.stylelint }}  |  \${{ inputs.typescript }}  |  \${{ inputs.eslint }}  |  \${{ inputs.unit }}  |  \${{ inputs.unit }}  |\\n\\n
                   [🔗 See details](\${{ github.server_url }}/\${{ github.repository }}/actions/runs/\${{ github.run_id }})"

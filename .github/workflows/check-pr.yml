@@ -27,7 +27,7 @@ jobs:
         with:
           cache-key: cache-turbo-checks-${{ github.event.pull_request.number }}
 
-      - name: Eslint
+      - name: ESLint
         id: eslint
         if: always()
         uses: ./.github/actions/check-run
@@ -39,7 +39,7 @@ jobs:
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: yarn pretify
+          script: yarn prettify
 
   tests:
 

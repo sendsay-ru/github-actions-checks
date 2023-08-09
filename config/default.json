@@ -5,13 +5,13 @@
       "steps": [
         {
           "key": "eslint",
-          "name": "Eslint",
+          "name": "ESLint",
           "command": "npm eslint"
         },
         {
           "key": "prettier",
           "name": "Prettier",
-          "command": "npm pretify"
+          "command": "npm prettify"
         }
       ]
     },
