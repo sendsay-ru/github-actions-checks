@@ -1,11 +1,6 @@
 name: Preparing
 description: preparing to run the checks
 
-inputs:
-  cache-key:
-    required: true
-    description: build cache key
-
 runs:
   using: composite
   steps:

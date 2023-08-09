@@ -6,12 +6,12 @@
         {
           "key": "eslint",
           "name": "ESLint",
-          "command": "yarn eslint"
+          "command": "npm eslint"
         },
         {
           "key": "prettier",
           "name": "Prettier",
-          "command": "yarn prettify"
+          "command": "npm prettify"
         }
       ]
     },
@@ -21,13 +21,13 @@
         {
           "key": "unit",
           "name": "Unit",
-          "command": "yarn unit"
+          "command": "npm test"
         }
       ]
     }
   ],
   "showComments": false,
   "node": 16,
-  "installCommand": "yarn install",
+  "installCommand": "npm install",
   "buildCommand": ""
 }

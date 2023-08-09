@@ -1,0 +1,76 @@
+name: Check PR
+on: [pull_request]
+
+env:
+  NODE_ENV: CI
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:<% if (showComments) { %>
+  start:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_COLOR: 1
+      PROGRESS_TITLE: "### 👷 Checks in progress..."
+      PROGRESS_ICON: "🏄🏻‍♂️"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Starting comment
+        uses: ./.github/actions/check-comment
+        with:
+          title: ${{ env.PROGRESS_TITLE }}<% checks.forEach(function({ key }){ %>
+          <%- key %>: ${{ env.PROGRESS_ICON }}<% }) %>
+          token: ${{ secrets.GITHUB_TOKEN }}<% } %>
+
+  <% jobs.forEach(function(job){ %>
+  <%- job.key %>:
+    <% if (showComments) { %>needs: start<% } %>
+    runs-on: ubuntu-latest
+
+    outputs:<% job.steps.forEach(function(step){ %>
+      <%- step.key %>: ${{ steps.<%- step.key %>.outputs.result }}<% }) %>
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Preparing
+        uses: ./.github/actions/check-install
+      <% job.steps.forEach(function(step){ %>
+      - name: <%- step.name %>
+        id: <%- step.key %>
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: <%- step.command %>
+      <% }) %>
+  <% }) %>
+  <% if (showComments) { %>
+  report:
+    needs: [<%- jobs.map((job) => job.key).join(',') %>]
+    if: always()
+    runs-on: ubuntu-latest
+    env:
+      SUCCESS_TITLE: "### ✅ Checks completed successfully!"
+      FAILURE_TITLE:  "### 🚫 Checks were executed with errors!"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Title
+        id: title
+        run: |
+          if <%- jobs.map((job) => "[[ ${{ needs." + job.key + ".result }} == 'success' ]]").join(' && ') %>; then echo "str=${{ env.SUCCESS_TITLE }}" >> $GITHUB_OUTPUT; else echo "str=${{ env.FAILURE_TITLE }}" >> $GITHUB_OUTPUT; fi
+
+      - name: Final comment
+        uses: ./.github/actions/check-comment
+        with:
+          title: ${{ steps.title.outputs.str }}<% jobs.forEach(function(job){ %><% job.steps.forEach(function(step){ %>
+          <%- step.key %>: ${{ needs.<%- job.key %>.outputs.<%- step.key %> }}<% }) %><% }) %>
+          token: ${{ secrets.GITHUB_TOKEN }}
+  <% } %>

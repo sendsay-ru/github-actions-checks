@@ -3,13 +3,13 @@
  <img width=200px height=200px src="https://sendsay.ru/new/img/logo.svg" alt="Project logo"></a>
 </p>
 
-<h3 align="center">github-action-checks</h3>
+<h3 align="center">github-actions-checks</h3>
 
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/sendsay-ru/github-action-checks/issues.svg)](https://github.com/sendsay-ru/github-action-checks/issues/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/sendsay-ru/github-action-checks/issues.svg)](https://github.com/sendsay-ru/github-action-checks/issues/pulls)
+[![GitHub Issues](https://img.shields.io/github/issues/sendsay-ru/github-actions-checks/issues.svg)](https://github.com/sendsay-ru/github-actions-checks/issues/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/sendsay-ru/github-actions-checks/issues.svg)](https://github.com/sendsay-ru/github-actions-checks/issues/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
@@ -26,6 +26,7 @@
 - [🧐 About ](#-about-)
 - [🏁 Getting Started ](#-getting-started-)
 - [🎈 Usage ](#-usage-)
+- [💬 Comments](#-comments)
 - [✍️ Authors ](#️-authors-)
 
 ## 🧐 About <a name = "about"></a>
@@ -37,10 +38,16 @@ We have created a project to configure the same type of checks. This package all
 Just run
 
 ```
-npx github-action-checks
+npx github-actions-checks
 ```
 
-The file `.github.checks.json` will appear in your repository. You can make the necessary changes in it and re-run the utility to make changes in workflow according to the config.
+The file `.github.checks.json` will appear in your repository. You can edit it as you like and re-run the utility to update workflow according to the config.<br>So, just edit this file and run again:
+
+```
+npx github-actions-checks
+```
+
+Then commit changes in your repository.
 
 ## 🎈 Usage <a name="usage"></a>
 
@@ -54,13 +61,13 @@ config by default:
       "steps": [
         {
           "key": "eslint",
-          "name": "Eslint",
+          "name": "ESLint",
           "command": "npm eslint"
         },
         {
           "key": "prettier",
           "name": "Prettier",
-          "command": "npm pretify"
+          "command": "npm prettify"
         }
       ]
     },
@@ -75,26 +82,49 @@ config by default:
       ]
     }
   ],
+  "showComments": false,
   "node": 16,
   "installCommand": "npm install",
   "buildCommand": ""
 }
 ```
 
+`showComments` - show [Comments section](#-comments)
+
 `jobs` - asynchronous processes<br>
-each process - is a virtual machine and has:<br>
+each process will start a virtual machine with:<br>
 `node` - node.js version<br>
 `installCommand` - command to install dependencies<br>
 `buildCommand` - the command to build the project
 
 
-`steps` - array of checks in within a single process<br>
+`steps` - array of checks within a separate process<br>
 each step has a `key`, a `name` and a `command`<br>
 
 in this example, 2 parallel processes will start:<br>
-in the first, checks will run one after the other: eslint and prettier,<br>
-in the other - unit tests
+- in the first, checks will run one after the other: eslint and prettier,
+- in the second - unit tests
 
-## ✍️ Authors <a name = "authors"></a>
+<br>
 
-- [@aleksnick](https://github.com/aleksnick) - Idea & Initial work
+![Screenshot of a github flow](/public/images/flow.png)
+
+## 💬 Comments
+
+> <b>Works only in private repositories!</b>
+
+If you change `{showComments: true}` in `.github.checks.json`, a special comment with the status of checks will be displayed in the pull request.
+
+Example of a comment when checks are in progress:
+![Screenshot of a github flow](/public/images/progress.png)
+
+Example of a comment when one of the checks failed:
+![Screenshot of a github flow](/public/images/progress.png)
+
+Example of a comment when one of the checks failed:
+![Screenshot of a github flow](/public/images/failed.png)
+<br>
+
+## ✍️ Authors <a name = "authors"></a> 
+
+- [@aleksnick](https://github.com/aleksnick) - Idea & Initial work, [contact in telegram](https://t.me/aleksnick)

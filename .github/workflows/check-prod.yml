@@ -22,10 +22,8 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-${{ github.event.ref }}
 
-      - name: Eslint
+      - name: ESLint
         id: eslint
         if: always()
         uses: ./.github/actions/check-run
@@ -37,7 +35,7 @@ jobs:
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: yarn pretify
+          script: yarn prettify
 
   tests:
     runs-on: ubuntu-latest
@@ -48,13 +46,11 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-${{ github.event.ref }}
 
       - name: Unit
         id: unit
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: yarn test
+          script: yarn unit
 
