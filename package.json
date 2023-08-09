@@ -1,30 +1,28 @@
 {
-  "name": "github-action-checks",
+  "name": "github-actions-checks",
   "version": "1.0.5",
-  "description": "Add github-actions workflow for linting",
+  "description": "A CLI-tool for generate github-actions workflow for pull-requests and master branch checks",
   "keywords": [
     "github",
     "actions",
-    "check",
-    "javascript",
-    "linting",
     "workflow",
-    "code",
-    "review"
+    "deployment",
+    "linting",
+    "code review"
   ],
-  "homepage": "https://github.com/sendsay-ru/github-action-checks#readme",
+  "homepage": "https://github.com/sendsay-ru/github-actions-checks#readme",
   "bugs": {
-    "url": "https://github.com/sendsay-ru/github-action-checks/issues"
+    "url": "https://github.com/sendsay-ru/github-actions-checks/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sendsay-ru/github-action-checks.git"
+    "url": "git+https://github.com/sendsay-ru/github-actions-checks.git"
   },
   "license": "MIT",
   "author": "Aleksey Nikolaev <aleksnick01+npm@gmail.com>",
   "main": "src/utils.js",
   "bin": {
-    "github-action-checks": "src/index.js"
+    "github-actions-checks": "src/index.js"
   },
   "scripts": {
     "eslint": "eslint src",

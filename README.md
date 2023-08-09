@@ -3,13 +3,13 @@
  <img width=200px height=200px src="https://sendsay.ru/new/img/logo.svg" alt="Project logo"></a>
 </p>
 
-<h3 align="center">github-action-checks</h3>
+<h3 align="center">github-actions-checks</h3>
 
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/sendsay-ru/github-action-checks/issues.svg)](https://github.com/sendsay-ru/github-action-checks/issues/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/sendsay-ru/github-action-checks/issues.svg)](https://github.com/sendsay-ru/github-action-checks/issues/pulls)
+[![GitHub Issues](https://img.shields.io/github/issues/sendsay-ru/github-actions-checks/issues.svg)](https://github.com/sendsay-ru/github-actions-checks/issues/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/sendsay-ru/github-actions-checks/issues.svg)](https://github.com/sendsay-ru/github-actions-checks/issues/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
@@ -38,13 +38,13 @@ We have created a project to configure the same type of checks. This package all
 Just run
 
 ```
-npx github-action-checks
+npx github-actions-checks
 ```
 
 The file `.github.checks.json` will appear in your repository. You can edit it as you like and re-run the utility to update workflow according to the config.<br>So, just edit this file and run again:
 
 ```
-npx github-action-checks
+npx github-actions-checks
 ```
 
 Then commit changes in your repository.
