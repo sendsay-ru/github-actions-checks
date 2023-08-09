@@ -29,8 +29,7 @@
     "eslint:fix": "yarn eslint --fix",
     "prettify": "prettier -c src",
     "prettify:fix": "yarn prettify -w",
-    "test": "yarn unit",
-    "unit": "yarn jest"
+    "unit": "jest"
   },
   "dependencies": {
     "ejs": "^3.1.9",

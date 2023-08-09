@@ -55,11 +55,7 @@ module.exports.saveFiles = (compiledSource) => {
 };
 
 const getData = (config) => {
-  const checks = [];
-
-  config.jobs.forEach((job) => {
-    checks.push(...job.steps);
-  });
+  const checks = config.jobs.reduce((acc, job) => [...acc, ...job.steps], []);
 
   return {
     ...config,
