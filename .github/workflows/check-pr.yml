@@ -24,8 +24,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-${{ github.event.pull_request.number }}
 
       - name: ESLint
         id: eslint
@@ -54,8 +52,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-${{ github.event.pull_request.number }}
 
       - name: Unit
         id: unit

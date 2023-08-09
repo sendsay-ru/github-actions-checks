@@ -29,8 +29,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.pull_request.number }}
 
       - name: ESLint
         id: eslint
@@ -59,8 +57,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.pull_request.number }}
 
       - name: Unit
         id: unit
@@ -98,8 +94,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.ref }}
 
       - name: ESLint
         id: eslint
@@ -124,8 +118,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.ref }}
 
       - name: Unit
         id: unit
@@ -177,11 +169,6 @@ runs:
   {
     "content": "name: Preparing
 description: preparing to run the checks
-
-inputs:
-  cache-key:
-    required: true
-    description: build cache key
 
 runs:
   using: composite
@@ -308,11 +295,6 @@ runs:
     "content": "name: Preparing
 description: preparing to run the checks
 
-inputs:
-  cache-key:
-    required: true
-    description: build cache key
-
 runs:
   using: composite
   steps:
@@ -416,8 +398,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.pull_request.number }}
 
       - name: Prettier
         id: prettier
@@ -453,8 +433,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.pull_request.number }}
 
       - name: ESLint
         id: eslint
@@ -476,8 +454,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.pull_request.number }}
 
       - name: Unit-app
         id: unit
@@ -499,8 +475,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.pull_request.number }}
 
       - name: Unit-rest
         id: unit
@@ -566,8 +540,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.ref }}
 
       - name: Prettier
         id: prettier
@@ -599,8 +571,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.ref }}
 
       - name: ESLint
         id: eslint
@@ -618,8 +588,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.ref }}
 
       - name: Unit-app
         id: unit
@@ -637,8 +605,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-\${{ github.event.ref }}
 
       - name: Unit-rest
         id: unit
@@ -699,11 +665,6 @@ runs:
   {
     "content": "name: Preparing
 description: preparing to run the checks
-
-inputs:
-  cache-key:
-    required: true
-    description: build cache key
 
 runs:
   using: composite

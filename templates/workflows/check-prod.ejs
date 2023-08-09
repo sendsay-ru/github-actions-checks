@@ -22,8 +22,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-${{ github.event.ref }}
 
       <% job.steps.forEach(function(step){ %>
       - name: <%- step.name %>

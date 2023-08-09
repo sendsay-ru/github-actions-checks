@@ -41,8 +41,6 @@ jobs:<% if (showComments) { %>
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: cache-turbo-checks-${{ github.event.pull_request.number }}
       <% job.steps.forEach(function(step){ %>
       - name: <%- step.name %>
         id: <%- step.key %>
