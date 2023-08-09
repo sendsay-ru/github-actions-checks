@@ -58,6 +58,6 @@ jobs:
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: yarn test
+          script: yarn unit
 
 

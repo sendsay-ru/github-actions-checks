@@ -21,7 +21,7 @@
         {
           "key": "unit",
           "name": "Unit",
-          "command": "yarn test"
+          "command": "yarn unit"
         }
       ]
     }
