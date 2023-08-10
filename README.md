@@ -62,12 +62,12 @@ config by default:
         {
           "key": "eslint",
           "name": "ESLint",
-          "command": "npm eslint"
+          "command": "npm run eslint"
         },
         {
           "key": "prettier",
           "name": "Prettier",
-          "command": "npm prettify"
+          "command": "npm run prettify"
         }
       ]
     },
@@ -77,7 +77,7 @@ config by default:
         {
           "key": "unit",
           "name": "Unit",
-          "command": "npm test"
+          "command": "npm run test"
         }
       ]
     }
