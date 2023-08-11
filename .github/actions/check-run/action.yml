@@ -2,9 +2,6 @@ name: Run check
 description: run check script
 
 inputs:
-  name:
-    required: true
-    description: name
   script:
     required: true
     description: script command
