@@ -12,7 +12,7 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  <% jobs.forEach(function(job){ %>
+  <% jobs.forEach((job) => { %>
   <%- job.key %>:
     runs-on: ubuntu-latest
 
@@ -23,7 +23,7 @@ jobs:
       - name: Preparing
         uses: ./.github/actions/check-install
 
-      <% job.steps.forEach(function(step){ %>
+      <% job.steps.forEach((step) => { %>
       - name: <%- step.name %>
         id: <%- step.key %>
         if: always()

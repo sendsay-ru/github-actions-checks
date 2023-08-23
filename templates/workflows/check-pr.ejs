@@ -23,16 +23,16 @@ jobs:<% if (showComments) { %>
       - name: Starting comment
         uses: ./.github/actions/check-comment
         with:
-          title: ${{ env.PROGRESS_TITLE }}<% checks.forEach(function({ key }){ %>
+          title: ${{ env.PROGRESS_TITLE }}<% checks.forEach(({ key }) => { %>
           <%- key %>: ${{ env.PROGRESS_ICON }}<% }) %>
           token: ${{ secrets.GITHUB_TOKEN }}<% } %>
 
-  <% jobs.forEach(function(job){ %>
+  <% jobs.forEach((job) => { %>
   <%- job.key %>:
     <% if (showComments) { %>needs: start<% } %>
     runs-on: ubuntu-latest
 
-    outputs:<% job.steps.forEach(function(step){ %>
+    outputs:<% job.steps.forEach((step) => { %>
       <%- step.key %>: ${{ steps.<%- step.key %>.outputs.result }}<% }) %>
 
     steps:
@@ -41,7 +41,7 @@ jobs:<% if (showComments) { %>
 
       - name: Preparing
         uses: ./.github/actions/check-install
-      <% job.steps.forEach(function(step){ %>
+      <% job.steps.forEach((step) => { %>
       - name: <%- step.name %>
         id: <%- step.key %>
         if: always()
@@ -70,7 +70,7 @@ jobs:<% if (showComments) { %>
       - name: Final comment
         uses: ./.github/actions/check-comment
         with:
-          title: ${{ steps.title.outputs.str }}<% jobs.forEach(function(job){ %><% job.steps.forEach(function(step){ %>
+          title: ${{ steps.title.outputs.str }}<% jobs.forEach((job) => { %><% job.steps.forEach((step) => { %>
           <%- step.key %>: ${{ needs.<%- job.key %>.outputs.<%- step.key %> }}<% }) %><% }) %>
           token: ${{ secrets.GITHUB_TOKEN }}
   <% } %>
