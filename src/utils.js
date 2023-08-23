@@ -8,7 +8,7 @@ const emptyConfig = require('../config/empty');
 const CONFIG_NAME = '.github.checks.json';
 const CONFIG_PATH = path.resolve(process.cwd(), CONFIG_NAME);
 
-module.exports.checkDirs = () => {
+const checkDirs = () => {
   dirs.forEach((dir) => {
     const dirPath = path.resolve(process.cwd(), dir);
 
@@ -25,7 +25,7 @@ module.exports.checkDirs = () => {
   }
 };
 
-module.exports.getConfig = () => {
+const getConfig = () => {
   if (!fs.existsSync(CONFIG_PATH)) {
     throw 'No config file';
   }
@@ -46,7 +46,7 @@ const finalEdit = (content) => {
   return content.replace(/ +$/gm, '').replace(/\n\n\n/gm, '\n\n');
 };
 
-module.exports.saveFiles = (compiledSource) => {
+const saveFiles = (compiledSource) => {
   compiledSource.forEach(({ output, content }) => {
     fs.writeFileSync(path.resolve(process.cwd(), output), content, {
       mode: 0o775,
@@ -63,7 +63,7 @@ const getData = (config) => {
   };
 };
 
-module.exports.render = (source, config) => {
+const render = (source, config) => {
   const validation = schema.validate(config);
 
   if (validation.error) {
@@ -92,4 +92,11 @@ module.exports.render = (source, config) => {
 
     return res;
   });
+};
+
+module.exports = {
+  checkDirs,
+  getConfig,
+  saveFiles,
+  render,
 };
