@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const source = require('../config/source.json');
+const source = require('../config/source');
 const { render, getConfig, checkDirs, saveFiles } = require('./utils');
 
 checkDirs();

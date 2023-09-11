@@ -1,7 +1,7 @@
 const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path');
-const schema = require('./schema');
+const configSchema = require('../config/config.schema');
 const dirs = require('../config/dirs');
 const emptyConfig = require('../config/empty');
 
@@ -64,34 +64,36 @@ const getData = (config) => {
 };
 
 const render = (source, config) => {
-  const validation = schema.validate(config);
+  const validationConig = configSchema.validate(config);
 
-  if (validation.error) {
-    throw validation.error;
+  if (validationConig.error) {
+    throw validationConig.error;
   }
 
   const data = getData(config);
 
-  return source.map(({ input, output }) => {
-    let res = {};
+  return source
+    .filter(({ condition }) => !condition || condition(config))
+    .map(({ input, output }) => {
+      let res = {};
 
-    ejs.renderFile(
-      path.resolve(__dirname, '../', input),
-      data,
-      function (err, content) {
-        if (err) {
-          throw err;
-        }
+      ejs.renderFile(
+        path.resolve(__dirname, '../', input),
+        data,
+        function (err, content) {
+          if (err) {
+            throw err;
+          }
 
-        res = {
-          output,
-          content: finalEdit(content),
-        };
-      },
-    );
+          res = {
+            output,
+            content: finalEdit(content),
+          };
+        },
+      );
 
-    return res;
-  });
+      return res;
+    });
 };
 
 module.exports = {
