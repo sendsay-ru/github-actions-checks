@@ -1,9 +1,10 @@
 #!/usr/bin/env node
+const path = require('path');
 
 const source = require('../config/source');
-const { render, getConfig, checkDirs, saveFiles } = require('./utils');
+const { render, getConfig, checkConfigDir, saveFiles } = require('./utils');
 
-checkDirs();
+checkConfigDir();
 
 const config = getConfig();
 

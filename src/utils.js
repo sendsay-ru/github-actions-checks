@@ -2,21 +2,26 @@ const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path');
 const configSchema = require('../config/config.schema');
-const dirs = require('../config/dirs');
 const emptyConfig = require('../config/empty');
+const { CONFIG_PATH } = require('./constants');
 
-const CONFIG_NAME = '.github.checks.json';
-const CONFIG_PATH = path.resolve(process.cwd(), CONFIG_NAME);
+const checkDir = (filePath) => {
+  let dir = '';
 
-const checkDirs = () => {
-  dirs.forEach((dir) => {
-    const dirPath = path.resolve(process.cwd(), dir);
+  const folders = filePath.split('/').slice(0, -1);
 
-    if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath);
+  folders.forEach((folder) => {
+    dir = `${dir}${dir !== '' ? '/' : ''}${folder}`;
+
+    const absolutePath = path.resolve(process.cwd(), dir);
+
+    if (!fs.existsSync(absolutePath)) {
+      fs.mkdirSync(absolutePath);
     }
   });
+};
 
+const checkConfigDir = () => {
   if (!fs.existsSync(CONFIG_PATH)) {
     fs.cpSync(
       path.resolve(__dirname, '../config/default.json'),
@@ -48,6 +53,8 @@ const finalEdit = (content) => {
 
 const saveFiles = (compiledSource) => {
   compiledSource.forEach(({ output, content }) => {
+    checkDir(output);
+
     fs.writeFileSync(path.resolve(process.cwd(), output), content, {
       mode: 0o775,
     });
@@ -97,7 +104,7 @@ const render = (source, config) => {
 };
 
 module.exports = {
-  checkDirs,
+  checkConfigDir,
   getConfig,
   saveFiles,
   render,
