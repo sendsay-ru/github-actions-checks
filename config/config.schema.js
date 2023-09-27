@@ -18,7 +18,7 @@ module.exports = Joi.object({
           ),
       }),
     ),
-  node: Joi.any(),
+  node: Joi.alternatives().try(Joi.number(), Joi.string().empty('')),
   installCommand: Joi.string().empty(''),
   buildCommand: Joi.string().empty(''),
 });

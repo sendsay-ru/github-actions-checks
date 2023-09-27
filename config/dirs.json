@@ -1,8 +1,0 @@
-[
-  ".github",
-  ".github/actions",
-  ".github/actions/check-comment",
-  ".github/actions/check-install",
-  ".github/actions/check-run",
-  ".github/workflows"
-]

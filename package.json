@@ -26,9 +26,9 @@
   },
   "scripts": {
     "build": "node ./src/index.js",
-    "eslint": "eslint src",
+    "eslint": "eslint src config",
     "eslint:fix": "yarn eslint --fix",
-    "prettify": "prettier -c src",
+    "prettify": "prettier -c src config",
     "prettify:fix": "yarn prettify -w",
     "unit": "jest"
   },

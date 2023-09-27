@@ -1,22 +1,27 @@
 const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path');
-const schema = require('./schema');
-const dirs = require('../config/dirs');
+const configSchema = require('../config/config.schema');
 const emptyConfig = require('../config/empty');
+const { CONFIG_PATH } = require('./constants');
 
-const CONFIG_NAME = '.github.checks.json';
-const CONFIG_PATH = path.resolve(process.cwd(), CONFIG_NAME);
+const checkDir = (filePath) => {
+  let dir = '';
 
-const checkDirs = () => {
-  dirs.forEach((dir) => {
-    const dirPath = path.resolve(process.cwd(), dir);
+  const folders = filePath.split('/').slice(0, -1);
 
-    if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath);
+  folders.forEach((folder) => {
+    dir = `${dir}${dir !== '' ? '/' : ''}${folder}`;
+
+    const absolutePath = path.resolve(process.cwd(), dir);
+
+    if (!fs.existsSync(absolutePath)) {
+      fs.mkdirSync(absolutePath);
     }
   });
+};
 
+const checkConfigDir = () => {
   if (!fs.existsSync(CONFIG_PATH)) {
     fs.cpSync(
       path.resolve(__dirname, '../config/default.json'),
@@ -48,6 +53,8 @@ const finalEdit = (content) => {
 
 const saveFiles = (compiledSource) => {
   compiledSource.forEach(({ output, content }) => {
+    checkDir(output);
+
     fs.writeFileSync(path.resolve(process.cwd(), output), content, {
       mode: 0o775,
     });
@@ -64,38 +71,40 @@ const getData = (config) => {
 };
 
 const render = (source, config) => {
-  const validation = schema.validate(config);
+  const validationConig = configSchema.validate(config);
 
-  if (validation.error) {
-    throw validation.error;
+  if (validationConig.error) {
+    throw validationConig.error;
   }
 
   const data = getData(config);
 
-  return source.map(({ input, output }) => {
-    let res = {};
+  return source
+    .filter(({ condition }) => !condition || condition(config))
+    .map(({ input, output }) => {
+      let res = {};
 
-    ejs.renderFile(
-      path.resolve(__dirname, '../', input),
-      data,
-      function (err, content) {
-        if (err) {
-          throw err;
-        }
+      ejs.renderFile(
+        path.resolve(__dirname, '../', input),
+        data,
+        function (err, content) {
+          if (err) {
+            throw err;
+          }
 
-        res = {
-          output,
-          content: finalEdit(content),
-        };
-      },
-    );
+          res = {
+            output,
+            content: finalEdit(content),
+          };
+        },
+      );
 
-    return res;
-  });
+      return res;
+    });
 };
 
 module.exports = {
-  checkDirs,
+  checkConfigDir,
   getConfig,
   saveFiles,
   render,
