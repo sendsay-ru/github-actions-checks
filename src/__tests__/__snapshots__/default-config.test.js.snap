@@ -3,7 +3,8 @@
 exports[`Render by default config should return expected value 1`] = `
 [
   {
-    "content": "name: Check PR
+    "content": "# rendered by https://www.npmjs.com/package/github-actions-checks
+name: Check PR
 on: [pull_request]
 
 env:
@@ -69,7 +70,8 @@ jobs:
     "output": ".github/workflows/check-pr.yml",
   },
   {
-    "content": "name: Check production
+    "content": "# rendered by https://www.npmjs.com/package/github-actions-checks
+name: Check production
 on:
   push:
     branches:
@@ -126,7 +128,8 @@ jobs:
     "output": ".github/workflows/check-prod.yml",
   },
   {
-    "content": "name: Preparing
+    "content": "# rendered by https://www.npmjs.com/package/github-actions-checks
+name: Preparing
 description: preparing to run the checks
 
 inputs:
@@ -149,7 +152,8 @@ runs:
     "output": ".github/actions/check-install/action.yml",
   },
   {
-    "content": "name: Run check
+    "content": "# rendered by https://www.npmjs.com/package/github-actions-checks
+name: Run check
 description: run check script
 
 inputs:
