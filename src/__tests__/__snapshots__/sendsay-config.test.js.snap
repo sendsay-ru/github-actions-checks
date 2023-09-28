@@ -8,6 +8,7 @@ on: [pull_request]
 
 env:
   NODE_ENV: CI
+  FORCE_COLOR: 1
 
 concurrency:
   group: \${{ github.workflow }}-\${{ github.event.pull_request.number }}
@@ -17,7 +18,6 @@ jobs:
   start:
     runs-on: ubuntu-latest
     env:
-      FORCE_COLOR: 1
       PROGRESS_TITLE: "### 👷 Checks in progress..."
       PROGRESS_ICON: "🏄🏻‍♂️"
 
@@ -52,6 +52,8 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
+        with:
+          cache-key: checks
 
       - name: Prettier
         id: prettier
@@ -87,6 +89,8 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
+        with:
+          cache-key: eslint
 
       - name: ESLint
         id: eslint
@@ -108,6 +112,8 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
+        with:
+          cache-key: unit-app
 
       - name: Unit-app
         id: unit
@@ -129,6 +135,8 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
+        with:
+          cache-key: unit-rest
 
       - name: Unit-rest
         id: unit
@@ -320,6 +328,11 @@ runs:
     "content": "name: Preparing
 description: preparing to run the checks
 
+inputs:
+  cache-key:
+    required: false
+    description: build cache key
+
 runs:
   using: composite
   steps:
@@ -331,6 +344,14 @@ runs:
     - name: Install packages
       shell: bash
       run: yarn install
+
+    - name: Cache turborepo
+      uses: actions/cache@v3
+      if: \${{ inputs.cache-key }}
+      with:
+        path: |
+          ./node_modules/.cache/turbo
+        key: \${{ inputs.cache-key }}
 
     - name: Build packages
       if: always()

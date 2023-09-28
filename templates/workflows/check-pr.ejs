@@ -1,8 +1,9 @@
 name: Check PR
 on: [pull_request]
 
-env:
-  NODE_ENV: CI
+<% if (typeof env !== "undefined") { %>env:<% Object.entries(env).forEach(([key, value]) => { %>
+  <%- key %>: <%- value %><% }) %>
+<% } %>
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -12,7 +13,6 @@ jobs:<% if (showComments) { %>
   start:
     runs-on: ubuntu-latest
     env:
-      FORCE_COLOR: 1
       PROGRESS_TITLE: "### 👷 Checks in progress..."
       PROGRESS_ICON: "🏄🏻‍♂️"
 
@@ -41,6 +41,8 @@ jobs:<% if (showComments) { %>
 
       - name: Preparing
         uses: ./.github/actions/check-install
+        with:
+          cache-key: <%- job.key %>
       <% job.steps.forEach((step) => { %>
       - name: <%- step.name %>
         id: <%- step.key %>

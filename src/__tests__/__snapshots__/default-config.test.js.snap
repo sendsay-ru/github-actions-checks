@@ -29,6 +29,8 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
+        with:
+          cache-key: checks
 
       - name: ESLint
         id: eslint
@@ -57,6 +59,8 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
+        with:
+          cache-key: tests
 
       - name: Unit
         id: unit
@@ -81,7 +85,6 @@ on:
 
 env:
   NODE_ENV: CI
-  FORCE_COLOR: 1
 
 jobs:
 
@@ -133,6 +136,11 @@ jobs:
     "content": "name: Preparing
 description: preparing to run the checks
 
+inputs:
+  cache-key:
+    required: false
+    description: build cache key
+
 runs:
   using: composite
   steps:
@@ -144,6 +152,7 @@ runs:
     - name: Install packages
       shell: bash
       run: npm install
+
 
 ",
     "output": ".github/actions/check-install/action.yml",

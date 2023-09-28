@@ -2,6 +2,8 @@ const Joi = require('joi');
 
 module.exports = Joi.object({
   showComments: Joi.boolean(),
+  useTurbo: Joi.boolean(),
+  env: Joi.object(),
   jobs: Joi.array()
     .required()
     .items(

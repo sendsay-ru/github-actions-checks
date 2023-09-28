@@ -7,12 +7,7 @@ on:
     tags:
       - v**
 
-env:
-  NODE_ENV: CI
-  FORCE_COLOR: 1
-
 jobs:
-
   checks:
     runs-on: ubuntu-latest
 
@@ -53,4 +48,3 @@ jobs:
         uses: ./.github/actions/check-run
         with:
           script: yarn unit
-

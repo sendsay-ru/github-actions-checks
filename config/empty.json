@@ -2,6 +2,7 @@
   "jobs": [],
   "node": "",
   "showComments": false,
+  "useTurbo": false,
   "installCommand": "",
   "buildCommand": ""
 }

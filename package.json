@@ -1,6 +1,6 @@
 {
   "name": "github-actions-checks",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "A CLI-tool for generate github-actions workflow for pull-requests and master branch checks",
   "keywords": [
     "github",
@@ -28,7 +28,7 @@
     "build": "node ./src/index.js",
     "eslint": "eslint src config",
     "eslint:fix": "yarn eslint --fix",
-    "prettify": "prettier -c src config",
+    "prettify": "prettier -c src config .github",
     "prettify:fix": "yarn prettify -w",
     "unit": "jest"
   },

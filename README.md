@@ -55,6 +55,9 @@ The main config - `.github.checks.json`<br>
 config by default:
 ```
 {
+  "env": {
+    "NODE_ENV": "CI"
+  },
   "jobs": [
     {
       "key": "checks",
@@ -91,12 +94,13 @@ config by default:
 
 `showComments` - show [Comments section](#-comments)
 
+`env` - environment variables<br>
 `jobs` - asynchronous processes<br>
 each process will start a virtual machine with:<br>
 `node` - node.js version<br>
 `installCommand` - command to install dependencies<br>
-`buildCommand` - the command to build the project
-
+`buildCommand` - the command to build the project<br>
+`useTurbo` - use Turborepo cache<br>
 
 `steps` - array of checks within a separate process<br>
 each step has a `key`, a `name` and a `command`<br>

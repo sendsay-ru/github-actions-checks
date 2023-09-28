@@ -7,9 +7,9 @@ on:
     tags:
       - v**
 
-env:
-  NODE_ENV: CI
-  FORCE_COLOR: 1
+<% if (typeof env !== "undefined") { %>env:<% Object.entries(env).forEach(([key, value]) => { %>
+  <%- key %>: <%- value %><% }) %>
+<% } %>
 
 jobs:
   <% jobs.forEach((job) => { %>

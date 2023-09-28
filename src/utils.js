@@ -42,7 +42,6 @@ const getConfig = () => {
   );
 
   return {
-    ...emptyConfig,
     ...clientConfig,
   };
 };
@@ -65,6 +64,7 @@ const getData = (config) => {
   const checks = config.jobs.reduce((acc, job) => [...acc, ...job.steps], []);
 
   return {
+    ...emptyConfig,
     ...config,
     checks,
   };

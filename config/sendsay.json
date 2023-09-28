@@ -1,4 +1,8 @@
 {
+  "env": {
+    "NODE_ENV": "CI",
+    "FORCE_COLOR": "1"
+  },
   "jobs": [
     {
       "key": "checks",
@@ -52,6 +56,7 @@
     }
   ],
   "showComments": true,
+  "useTurbo": true,
   "node": 16,
   "installCommand": "yarn install",
   "buildCommand": "yarn build-packages"
