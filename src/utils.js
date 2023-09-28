@@ -1,6 +1,7 @@
 const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path');
+const prettier = require('prettier');
 const configSchema = require('../config/config.schema');
 const emptyConfig = require('../config/empty');
 const { CONFIG_PATH } = require('./constants');
@@ -46,8 +47,12 @@ const getConfig = () => {
   };
 };
 
-const finalEdit = (content) => {
-  return content.replace(/ +$/gm, '').replace(/\n\n\n/gm, '\n\n');
+const finalEdit = async (content) => {
+  return await prettier.format(content, {
+    singleQuote: false,
+    trailingComma: 'all',
+    parser: 'yaml',
+  });
 };
 
 const saveFiles = (compiledSource) => {
@@ -70,7 +75,7 @@ const getData = (config) => {
   };
 };
 
-const render = (source, config) => {
+const render = async (source, config) => {
   const validationConig = configSchema.validate(config);
 
   if (validationConig.error) {
@@ -79,28 +84,23 @@ const render = (source, config) => {
 
   const data = getData(config);
 
-  return source
-    .filter(({ condition }) => !condition || condition(config))
-    .map(({ input, output }) => {
-      let res = {};
+  return await Promise.all(
+    source
+      .filter(({ condition }) => !condition || condition(config))
+      .map(async ({ input, output }) => {
+        const draftContent = await ejs.renderFile(
+          path.resolve(__dirname, '../', input),
+          data,
+        );
 
-      ejs.renderFile(
-        path.resolve(__dirname, '../', input),
-        data,
-        function (err, content) {
-          if (err) {
-            throw err;
-          }
+        const content = await finalEdit(draftContent);
 
-          res = {
-            output,
-            content: finalEdit(content),
-          };
-        },
-      );
-
-      return res;
-    });
+        return {
+          output,
+          content,
+        };
+      }),
+  );
 };
 
 module.exports = {

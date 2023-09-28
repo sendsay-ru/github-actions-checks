@@ -7,7 +7,7 @@ describe('Render by sendsay config', () => {
     expect(render).toBeDefined();
   });
 
-  it('should return expected value', () => {
-    expect(render(source, sendsasyConfig)).toMatchSnapshot();
+  it('should return expected value', async () => {
+    expect(await render(source, sendsasyConfig)).toMatchSnapshot();
   });
 });

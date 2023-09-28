@@ -7,7 +7,7 @@ describe('Render by empty config', () => {
     expect(render).toBeDefined();
   });
 
-  it('should return expected value', () => {
-    expect(render(source, emptyConfig)).toMatchSnapshot();
+  it('should return expected value', async () => {
+    expect(await render(source, emptyConfig)).toMatchSnapshot();
   });
 });

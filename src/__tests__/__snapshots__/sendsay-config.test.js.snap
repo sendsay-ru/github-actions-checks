@@ -29,13 +29,36 @@ jobs:
         uses: ./.github/actions/check-comment
         with:
           title: \${{ env.PROGRESS_TITLE }}
+          eslint: \${{ env.PROGRESS_ICON }}
           prettier: \${{ env.PROGRESS_ICON }}
           stylelint: \${{ env.PROGRESS_ICON }}
           typescript: \${{ env.PROGRESS_ICON }}
-          eslint: \${{ env.PROGRESS_ICON }}
-          unit: \${{ env.PROGRESS_ICON }}
-          unit: \${{ env.PROGRESS_ICON }}
+          unit-app: \${{ env.PROGRESS_ICON }}
+          unit-rest: \${{ env.PROGRESS_ICON }}
           token: \${{ secrets.GITHUB_TOKEN }}
+
+  eslint:
+    needs: start
+    runs-on: ubuntu-latest
+
+    outputs:
+      eslint: \${{ steps.eslint.outputs.result }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Preparing
+        uses: ./.github/actions/check-install
+        with:
+          cache-key: eslint
+
+      - name: ESLint
+        id: eslint
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: yarn eslint
 
   checks:
     needs: start
@@ -76,35 +99,12 @@ jobs:
         with:
           script: yarn dev-tsc
 
-  eslint:
-    needs: start
-    runs-on: ubuntu-latest
-
-    outputs:
-      eslint: \${{ steps.eslint.outputs.result }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Preparing
-        uses: ./.github/actions/check-install
-        with:
-          cache-key: eslint
-
-      - name: ESLint
-        id: eslint
-        if: always()
-        uses: ./.github/actions/check-run
-        with:
-          script: yarn eslint
-
   unit-app:
     needs: start
     runs-on: ubuntu-latest
 
     outputs:
-      unit: \${{ steps.unit.outputs.result }}
+      unit-app: \${{ steps.unit-app.outputs.result }}
 
     steps:
       - name: Checkout
@@ -116,7 +116,7 @@ jobs:
           cache-key: unit-app
 
       - name: Unit-app
-        id: unit
+        id: unit-app
         if: always()
         uses: ./.github/actions/check-run
         with:
@@ -127,7 +127,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      unit: \${{ steps.unit.outputs.result }}
+      unit-rest: \${{ steps.unit-rest.outputs.result }}
 
     steps:
       - name: Checkout
@@ -139,20 +139,19 @@ jobs:
           cache-key: unit-rest
 
       - name: Unit-rest
-        id: unit
+        id: unit-rest
         if: always()
         uses: ./.github/actions/check-run
         with:
           script: yarn unit-packages
 
-
   report:
-    needs: [checks,eslint,unit-app,unit-rest]
+    needs: [eslint, checks, unit-app, unit-rest]
     if: always()
     runs-on: ubuntu-latest
     env:
       SUCCESS_TITLE: "### ✅ Checks completed successfully!"
-      FAILURE_TITLE:  "### 🚫 Checks were executed with errors!"
+      FAILURE_TITLE: "### 🚫 Checks were executed with errors!"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -160,20 +159,19 @@ jobs:
       - name: Title
         id: title
         run: |
-          if [[ \${{ needs.checks.result }} == 'success' ]] && [[ \${{ needs.eslint.result }} == 'success' ]] && [[ \${{ needs.unit-app.result }} == 'success' ]] && [[ \${{ needs.unit-rest.result }} == 'success' ]]; then echo "str=\${{ env.SUCCESS_TITLE }}" >> $GITHUB_OUTPUT; else echo "str=\${{ env.FAILURE_TITLE }}" >> $GITHUB_OUTPUT; fi
+          if [[ \${{ needs.eslint.result }} == 'success' ]] && [[ \${{ needs.checks.result }} == 'success' ]] && [[ \${{ needs.unit-app.result }} == 'success' ]] && [[ \${{ needs.unit-rest.result }} == 'success' ]]; then echo "str=\${{ env.SUCCESS_TITLE }}" >> $GITHUB_OUTPUT; else echo "str=\${{ env.FAILURE_TITLE }}" >> $GITHUB_OUTPUT; fi
 
       - name: Final comment
         uses: ./.github/actions/check-comment
         with:
           title: \${{ steps.title.outputs.str }}
+          eslint: \${{ needs.eslint.outputs.eslint }}
           prettier: \${{ needs.checks.outputs.prettier }}
           stylelint: \${{ needs.checks.outputs.stylelint }}
           typescript: \${{ needs.checks.outputs.typescript }}
-          eslint: \${{ needs.eslint.outputs.eslint }}
-          unit: \${{ needs.unit-app.outputs.unit }}
-          unit: \${{ needs.unit-rest.outputs.unit }}
+          unit-app: \${{ needs.unit-app.outputs.unit-app }}
+          unit-rest: \${{ needs.unit-rest.outputs.unit-rest }}
           token: \${{ secrets.GITHUB_TOKEN }}
-
 ",
     "output": ".github/workflows/check-pr.yml",
   },
@@ -192,6 +190,22 @@ env:
   FORCE_COLOR: 1
 
 jobs:
+  eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Preparing
+        uses: ./.github/actions/check-install
+
+      - name: ESLint
+        id: eslint
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: yarn eslint
 
   checks:
     runs-on: ubuntu-latest
@@ -224,23 +238,6 @@ jobs:
         with:
           script: yarn dev-tsc
 
-  eslint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Preparing
-        uses: ./.github/actions/check-install
-
-      - name: ESLint
-        id: eslint
-        if: always()
-        uses: ./.github/actions/check-run
-        with:
-          script: yarn eslint
-
   unit-app:
     runs-on: ubuntu-latest
 
@@ -252,7 +249,7 @@ jobs:
         uses: ./.github/actions/check-install
 
       - name: Unit-app
-        id: unit
+        id: unit-app
         if: always()
         uses: ./.github/actions/check-run
         with:
@@ -269,12 +266,11 @@ jobs:
         uses: ./.github/actions/check-install
 
       - name: Unit-rest
-        id: unit
+        id: unit-rest
         if: always()
         uses: ./.github/actions/check-run
         with:
           script: yarn unit-packages
-
 ",
     "output": ".github/workflows/check-prod.yml",
   },
@@ -289,6 +285,9 @@ inputs:
   title:
     required: true
     description: title
+  eslint:
+    required: true
+    description: ESLint
   prettier:
     required: true
     description: Prettier
@@ -298,29 +297,26 @@ inputs:
   typescript:
     required: true
     description: TypeScript
-  eslint:
-    required: true
-    description: ESLint
-  unit:
+  unit-app:
     required: true
     description: Unit-app
-  unit:
+  unit-rest:
     required: true
-    description: Unit-rest
+    description: Unit-rest status
 
 runs:
   using: composite
   steps:
-      - name: Comment
-        uses: sendsay-ru/rewritable-pr-comment@v1.0.1
-        with:
-          message: "\${{ inputs.title }} \\n\\n
-                  | Prettier | Stylelint | TypeScript | ESLint | Unit-app | Unit-rest |\\n
-                  | --- | --- | --- | --- | --- | --- |\\n
-                  |  \${{ inputs.prettier }}  |  \${{ inputs.stylelint }}  |  \${{ inputs.typescript }}  |  \${{ inputs.eslint }}  |  \${{ inputs.unit }}  |  \${{ inputs.unit }}  |\\n\\n
-                  [🔗 See details](\${{ github.server_url }}/\${{ github.repository }}/actions/runs/\${{ github.run_id }})"
-          GITHUB_TOKEN: \${{ inputs.token }}
-          COMMENT_IDENTIFIER: "comment-check-result"
+    - name: Comment
+      uses: sendsay-ru/rewritable-pr-comment@v1.0.1
+      with:
+        message: "\${{ inputs.title }} \\n\\n
+          | ESLint | Prettier | Stylelint | TypeScript | Unit-app | Unit-rest |\\n
+          | --- | --- | --- | --- | --- | --- |\\n
+          |  \${{ inputs.eslint }}  |  \${{ inputs.prettier }}  |  \${{ inputs.stylelint }}  |  \${{ inputs.typescript }}  |  \${{ inputs.unit-app }}  |  \${{ inputs.unit-rest }}  |\\n\\n
+          [🔗 See details](\${{ github.server_url }}/\${{ github.repository }}/actions/runs/\${{ github.run_id }})"
+        GITHUB_TOKEN: \${{ inputs.token }}
+        COMMENT_IDENTIFIER: "comment-check-result"
 ",
     "output": ".github/actions/check-comment/action.yml",
   },
@@ -343,7 +339,7 @@ runs:
 
     - name: Install packages
       shell: bash
-      run: yarn install
+      run: yarn install --immutable
 
     - name: Cache turborepo
       uses: actions/cache@v3
@@ -357,7 +353,6 @@ runs:
       if: always()
       shell: bash
       run: yarn build-packages
-
 ",
     "output": ".github/actions/check-install/action.yml",
   },

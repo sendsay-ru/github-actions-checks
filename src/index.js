@@ -6,5 +6,4 @@ checkConfigDir();
 
 const config = getConfig();
 
-const compiled = render(source, config);
-saveFiles(compiled);
+render(source, config).then(saveFiles);

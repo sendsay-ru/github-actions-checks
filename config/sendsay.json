@@ -5,6 +5,16 @@
   },
   "jobs": [
     {
+      "key": "eslint",
+      "steps": [
+        {
+          "key": "eslint",
+          "name": "ESLint",
+          "command": "yarn eslint"
+        }
+      ]
+    },
+    {
       "key": "checks",
       "steps": [
         {
@@ -25,20 +35,10 @@
       ]
     },
     {
-      "key": "eslint",
-      "steps": [
-        {
-          "key": "eslint",
-          "name": "ESLint",
-          "command": "yarn eslint"
-        }
-      ]
-    },
-    {
       "key": "unit-app",
       "steps": [
         {
-          "key": "unit",
+          "key": "unit-app",
           "name": "Unit-app",
           "command": "yarn unit-app"
         }
@@ -48,7 +48,7 @@
       "key": "unit-rest",
       "steps": [
         {
-          "key": "unit",
+          "key": "unit-rest",
           "name": "Unit-rest",
           "command": "yarn unit-packages"
         }
@@ -58,6 +58,6 @@
   "showComments": true,
   "useTurbo": true,
   "node": 16,
-  "installCommand": "yarn install",
+  "installCommand": "yarn install --immutable",
   "buildCommand": "yarn build-packages"
 }

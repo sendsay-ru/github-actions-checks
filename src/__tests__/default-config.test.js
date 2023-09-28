@@ -7,7 +7,7 @@ describe('Render by default config', () => {
     expect(render).toBeDefined();
   });
 
-  it('should return expected value', () => {
-    expect(render(source, defaultConfig)).toMatchSnapshot();
+  it('should return expected value', async () => {
+    expect(await render(source, defaultConfig)).toMatchSnapshot();
   });
 });
