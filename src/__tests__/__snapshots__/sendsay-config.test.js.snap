@@ -287,19 +287,19 @@ inputs:
     description: title
   eslint:
     required: true
-    description: ESLint
+    description: ESLint status
   prettier:
     required: true
-    description: Prettier
+    description: Prettier status
   stylelint:
     required: true
-    description: Stylelint
+    description: Stylelint status
   typescript:
     required: true
-    description: TypeScript
+    description: TypeScript status
   unit-app:
     required: true
-    description: Unit-app
+    description: Unit-app status
   unit-rest:
     required: true
     description: Unit-rest status

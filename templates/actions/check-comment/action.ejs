@@ -10,7 +10,7 @@ inputs:
     description: title<% checks.forEach(({ key, name }) => { %>
   <%- key %>:
     required: true
-    description: <%- name %><% }) %> status
+    description: <%- name %> status<% }) %>
 
 runs:
   using: composite
