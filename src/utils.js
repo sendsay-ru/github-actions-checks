@@ -47,7 +47,7 @@ const getConfig = () => {
   };
 };
 
-const finalEdit = async (content) => {
+const finalEdit = async (conten ) => {
   return await prettier.format(content, {
     singleQuote: false,
     trailingComma: 'all',
