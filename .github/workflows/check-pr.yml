@@ -8,7 +8,7 @@ concurrency:
 
 jobs:
   checks:
-    uses: sendsay-ru/.github/.github/workflows/lint.yml@main
+    uses: sendsay-ru/.github/.github/workflows/lint.yml@stable
     with:
       config-path: .github/lint.json
     secrets: inherit
