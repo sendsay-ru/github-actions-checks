@@ -11,4 +11,6 @@ jobs:
     uses: sendsay-ru/.github/.github/workflows/lint.yml@stable
     with:
       config-path: .github/lint.json
+      install-command: yarn
+      node-version: 18
     secrets: inherit
