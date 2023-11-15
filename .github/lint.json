@@ -1,0 +1,12 @@
+{
+  "include": [
+    {
+      "name": "Lint",
+      "script": "yarn eslint"
+    },
+    {
+      "name": "Unit",
+      "script": "yarn unit"
+    }
+  ]
+}
