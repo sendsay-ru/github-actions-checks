@@ -19,7 +19,7 @@
           "command": "yarn e2e"
         }
       ],
-      "preCommand": "npm run playwright install --with-deps",
+      "preCommand": "npx playwright install --with-deps",
       "artifacts": ["playwright-report", "playwright-artifacts"]
     },
     {
