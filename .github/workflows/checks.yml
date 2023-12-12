@@ -33,7 +33,7 @@ jobs:
       - name: Pre command
         if: always()
         shell: bash
-        run: npm run playwright install --with-deps
+        run: npx playwright install --with-deps
 
       - name: ESLint
         id: eslint
