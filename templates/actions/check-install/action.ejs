@@ -2,11 +2,6 @@
 name: Preparing
 description: preparing to run the checks
 
-inputs:
-  cache-key:
-    required: false
-    description: build cache key
-
 runs:
   using: composite
   steps:
@@ -20,13 +15,7 @@ runs:
       run: <%- installCommand %>
     <% } %>
     <% if (useTurbo) { %>
-    - name: Cache turborepo
-      uses: actions/cache@v3
-      if: ${{ inputs.cache-key }}
-      with:
-        path: |
-          ./node_modules/.cache/turbo
-        key: ${{ inputs.cache-key }}
+    - uses: dtinth/setup-github-actions-caching-for-turbo@v1
     <% } %>
     <% if (buildCommand) { %>
     - name: Build packages

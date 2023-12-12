@@ -1,12 +1,7 @@
 module.exports = [
   {
-    input: 'templates/workflows/check-pr.ejs',
-    output: '.github/workflows/check-pr.yml',
-    condition: ({ jobs }) => jobs.length > 0,
-  },
-  {
-    input: 'templates/workflows/check-prod.ejs',
-    output: '.github/workflows/check-prod.yml',
+    input: 'templates/workflows/checks.ejs',
+    output: '.github/workflows/checks.yml',
     condition: ({ jobs }) => jobs.length > 0,
   },
   {

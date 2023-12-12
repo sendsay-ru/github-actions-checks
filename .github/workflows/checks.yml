@@ -1,6 +1,14 @@
 # rendered by https://www.npmjs.com/package/github-actions-checks
-name: Check PR
-on: [pull_request]
+name: Checks
+on:
+  pull_request:
+  push:
+    branches:
+      - stable
+      - master
+      - main
+    tags:
+      - v**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}

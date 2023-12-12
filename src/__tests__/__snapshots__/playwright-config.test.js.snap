@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Render by default config should return expected value 1`] = `
+exports[`Render by playwright config should return expected value 1`] = `
 [
   {
     "content": "# rendered by https://www.npmjs.com/package/github-actions-checks
@@ -15,20 +15,16 @@ on:
     tags:
       - v**
 
-env:
-  NODE_ENV: CI
-
 concurrency:
   group: \${{ github.workflow }}-\${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
-  checks:
+  e2e:
     runs-on: ubuntu-latest
 
     outputs:
-      eslint: \${{ steps.eslint.outputs.result }}
-      prettier: \${{ steps.prettier.outputs.result }}
+      playwright: \${{ steps.playwright.outputs.result }}
 
     steps:
       - name: Checkout
@@ -37,39 +33,26 @@ jobs:
       - name: Preparing
         uses: ./.github/actions/check-install
 
-      - name: ESLint
-        id: eslint
+      - name: Pre command
+        if: always()
+        shell: bash
+        run: npm run playwright install --with-deps
+
+      - name: Playwright run
+        id: playwright
         if: always()
         uses: ./.github/actions/check-run
         with:
-          script: npm run eslint
+          script: npm run playwright test
 
-      - name: Prettier
-        id: prettier
+      - uses: actions/upload-artifact@v3
         if: always()
-        uses: ./.github/actions/check-run
         with:
-          script: npm run prettify
-
-  tests:
-    runs-on: ubuntu-latest
-
-    outputs:
-      unit: \${{ steps.unit.outputs.result }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Preparing
-        uses: ./.github/actions/check-install
-
-      - name: Unit
-        id: unit
-        if: always()
-        uses: ./.github/actions/check-run
-        with:
-          script: npm run test
+          name: artifacts
+          retention-days: 30
+          path: |
+            playwright-report
+            playwright-artifacts
 ",
     "output": ".github/workflows/checks.yml",
   },

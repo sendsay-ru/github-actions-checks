@@ -19,6 +19,11 @@ jobs:
       - name: Preparing
         uses: ./.github/actions/check-install
 
+      - name: Pre command
+        if: always()
+        shell: bash
+        run: npm run playwright install --with-deps
+
       - name: ESLint
         id: eslint
         if: always()
@@ -32,6 +37,22 @@ jobs:
         uses: ./.github/actions/check-run
         with:
           script: yarn prettify
+
+      - name: Playwright
+        id: playwright
+        if: always()
+        uses: ./.github/actions/check-run
+        with:
+          script: yarn e2e
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: artifacts
+          retention-days: 30
+          path: |
+            playwright-report
+            playwright-artifacts
 
   tests:
     runs-on: ubuntu-latest

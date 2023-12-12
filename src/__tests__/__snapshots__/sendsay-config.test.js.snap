@@ -4,8 +4,16 @@ exports[`Render by sendsay config should return expected value 1`] = `
 [
   {
     "content": "# rendered by https://www.npmjs.com/package/github-actions-checks
-name: Check PR
-on: [pull_request]
+name: Checks
+on:
+  pull_request:
+  push:
+    branches:
+      - stable
+      - master
+      - main
+    tags:
+      - v**
 
 env:
   NODE_ENV: CI
@@ -28,6 +36,7 @@ jobs:
 
       - name: Starting comment
         uses: ./.github/actions/check-comment
+        if: \${{ github.event.pull_request.number }}
         with:
           title: \${{ env.PROGRESS_TITLE }}
           eslint: \${{ env.PROGRESS_ICON }}
@@ -51,8 +60,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: eslint
 
       - name: ESLint
         id: eslint
@@ -76,8 +83,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: checks
 
       - name: Prettier
         id: prettier
@@ -113,8 +118,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: unit-app
 
       - name: Unit-app
         id: unit-app
@@ -136,8 +139,6 @@ jobs:
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: unit-rest
 
       - name: Unit-rest
         id: unit-rest
@@ -164,6 +165,7 @@ jobs:
 
       - name: Final comment
         uses: ./.github/actions/check-comment
+        if: \${{ github.event.pull_request.number }}
         with:
           title: \${{ steps.title.outputs.str }}
           eslint: \${{ needs.eslint.outputs.eslint }}
@@ -174,107 +176,7 @@ jobs:
           unit-rest: \${{ needs.unit-rest.outputs.unit-rest }}
           token: \${{ secrets.GITHUB_TOKEN }}
 ",
-    "output": ".github/workflows/check-pr.yml",
-  },
-  {
-    "content": "# rendered by https://www.npmjs.com/package/github-actions-checks
-name: Check production
-on:
-  push:
-    branches:
-      - stable
-      - master
-    tags:
-      - v**
-
-env:
-  NODE_ENV: CI
-  FORCE_COLOR: 1
-
-jobs:
-  eslint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Preparing
-        uses: ./.github/actions/check-install
-
-      - name: ESLint
-        id: eslint
-        if: always()
-        uses: ./.github/actions/check-run
-        with:
-          script: yarn eslint
-
-  checks:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Preparing
-        uses: ./.github/actions/check-install
-
-      - name: Prettier
-        id: prettier
-        if: always()
-        uses: ./.github/actions/check-run
-        with:
-          script: yarn prettify
-
-      - name: Stylelint
-        id: stylelint
-        if: always()
-        uses: ./.github/actions/check-run
-        with:
-          script: yarn stylelint
-
-      - name: TypeScript
-        id: typescript
-        if: always()
-        uses: ./.github/actions/check-run
-        with:
-          script: yarn dev-tsc
-
-  unit-app:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Preparing
-        uses: ./.github/actions/check-install
-
-      - name: Unit-app
-        id: unit-app
-        if: always()
-        uses: ./.github/actions/check-run
-        with:
-          script: yarn unit-app
-
-  unit-rest:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Preparing
-        uses: ./.github/actions/check-install
-
-      - name: Unit-rest
-        id: unit-rest
-        if: always()
-        uses: ./.github/actions/check-run
-        with:
-          script: yarn unit-packages
-",
-    "output": ".github/workflows/check-prod.yml",
+    "output": ".github/workflows/checks.yml",
   },
   {
     "content": "# rendered by https://www.npmjs.com/package/github-actions-checks
@@ -328,11 +230,6 @@ runs:
 name: Preparing
 description: preparing to run the checks
 
-inputs:
-  cache-key:
-    required: false
-    description: build cache key
-
 runs:
   using: composite
   steps:
@@ -345,13 +242,7 @@ runs:
       shell: bash
       run: yarn install --immutable
 
-    - name: Cache turborepo
-      uses: actions/cache@v3
-      if: \${{ inputs.cache-key }}
-      with:
-        path: |
-          ./node_modules/.cache/turbo
-        key: \${{ inputs.cache-key }}
+    - uses: dtinth/setup-github-actions-caching-for-turbo@v1
 
     - name: Build packages
       if: always()

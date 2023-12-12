@@ -18,6 +18,8 @@ module.exports = Joi.object({
               command: Joi.string().required(),
             }),
           ),
+        preCommand: Joi.string().empty(''),
+        artifacts: Joi.array().items(Joi.string()),
       }),
     ),
   node: Joi.alternatives().try(Joi.number(), Joi.string().empty('')),
