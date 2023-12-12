@@ -29,7 +29,7 @@
     "eslint:fix": "yarn eslint --fix",
     "prettify": "prettier -c src config",
     "prettify:fix": "yarn prettify -w",
-    "unit": "NODE_OPTIONS=--experimental-vm-modules jest **/__tests__/**/*.js"
+    "unit": "NODE_OPTIONS=--experimental-vm-modules jest --testRegex **/__tests__/**/*.js"
   },
   "dependencies": {
     "ejs": "^3.1.9",
