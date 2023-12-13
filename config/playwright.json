@@ -1,0 +1,17 @@
+{
+  "jobs": [
+    {
+      "key": "e2e",
+      "steps": [
+        {
+          "key": "playwright",
+          "name": "Playwright run",
+          "command": "npm run playwright test"
+        }
+      ],
+      "preCommand": "npx playwright install --with-deps",
+      "artifacts": ["playwright-report", "playwright-artifacts"]
+    }
+  ],
+  "installCommand": "npm install"
+}

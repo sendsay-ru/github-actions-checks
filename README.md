@@ -103,7 +103,12 @@ each process will start a virtual machine with:<br>
 `useTurbo` - use Turborepo cache<br>
 
 `steps` - array of checks within a separate process<br>
-each step has a `key`, a `name` and a `command`<br>
+each step has:
+`key`<br> 
+`name` - Title<br>
+`command` - bash command<br>
+`preCommand` - prepare bash command<br>
+`artifacts` - array of folders with artifacts<br>
 
 in this example, 2 parallel processes will start:<br>
 - in the first, checks will run one after the other: eslint and prettier,

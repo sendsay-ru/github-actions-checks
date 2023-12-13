@@ -12,8 +12,15 @@
           "key": "prettier",
           "name": "Prettier",
           "command": "yarn prettify"
+        },
+        {
+          "key": "playwright",
+          "name": "Playwright",
+          "command": "yarn e2e"
         }
-      ]
+      ],
+      "preCommand": "npx playwright install --with-deps",
+      "artifacts": ["playwright-report", "playwright-artifacts"]
     },
     {
       "key": "tests",

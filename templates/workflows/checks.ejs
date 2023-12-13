@@ -1,6 +1,14 @@
 # rendered by https://www.npmjs.com/package/github-actions-checks
-name: Check PR
-on: [pull_request]
+name: Checks
+on:
+  pull_request:
+  push:
+    branches:
+      - stable
+      - master
+      - main
+    tags:
+      - v**
 
 <% if (typeof env !== "undefined") { %>env:<% Object.entries(env).forEach(([key, value]) => { %>
   <%- key %>: <%- value %><% }) %>
@@ -23,6 +31,7 @@ jobs:<% if (showComments) { %>
 
       - name: Starting comment
         uses: ./.github/actions/check-comment
+        if: ${{ github.event.pull_request.number }}
         with:
           title: ${{ env.PROGRESS_TITLE }}<% checks.forEach(({ key }) => { %>
           <%- key %>: ${{ env.PROGRESS_ICON }}<% }) %>
@@ -42,8 +51,12 @@ jobs:<% if (showComments) { %>
 
       - name: Preparing
         uses: ./.github/actions/check-install
-        with:
-          cache-key: <%- job.key %>
+      <% if (job.preCommand) { %>
+      - name: Pre command
+        if: always()
+        shell: bash
+        run: <%- job.preCommand %>
+      <% } %>
       <% job.steps.forEach((step) => { %>
       - name: <%- step.name %>
         id: <%- step.key %>
@@ -52,7 +65,18 @@ jobs:<% if (showComments) { %>
         with:
           script: <%- step.command %>
       <% }) %>
-  <% }) %>
+      
+      <% if (job.artifacts) { %>
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: artifacts
+          retention-days: 30
+          path: |
+            <% job.artifacts.forEach((artifact) => { %><%- artifact %>
+            <% }) %>
+      <% } %>
+    <% }) %>
   <% if (showComments) { %>
   report:
     needs: [<%- jobs.map((job) => job.key).join(',') %>]
@@ -72,6 +96,7 @@ jobs:<% if (showComments) { %>
 
       - name: Final comment
         uses: ./.github/actions/check-comment
+        if: ${{ github.event.pull_request.number }}
         with:
           title: ${{ steps.title.outputs.str }}<% jobs.forEach((job) => { %><% job.steps.forEach((step) => { %>
           <%- step.key %>: ${{ needs.<%- job.key %>.outputs.<%- step.key %> }}<% }) %><% }) %>
