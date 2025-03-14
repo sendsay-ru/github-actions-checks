@@ -1,6 +1,9 @@
 name: Backup to gitlab
 
-on: [push, delete]
+on:
+  push:
+  delete:
+  workflow_dispatch:
 
 jobs:
   to_gitlab:
